@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nome Cognome — 3D Animation &amp; Rigging</title>
+<meta name="description" content="Portfolio e showreel di animazione 3D e rigging di Nome Cognome.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#0B0C0E;
+    --surface:#141618;
+    --surface-2:#1B1E21;
+    --grid:#24272B;
+    --hair:#2C2F33;
+    --ink:#EDEFF2;
+    --ink-dim:#8A8F98;
+    --ink-faint:#565B62;
+    --joint:#FFC94A;
+    --joint-dim:#7A5F22;
+    --ik:#FF4FA0;
+    --ik-dim:#7A2650;
+    --ok:#5BD68C;
+    --radius:2px;
+    --font-display: 'Space Grotesk', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+  }
+  body{
+    background:var(--void);
+    color:var(--ink);
+    font-family:var(--font-body);
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none;}
+  img,video{max-width:100%;display:block;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 32px;}
+  .eyebrow{
+    font-family:var(--font-mono);
+    font-size:12px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--joint);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:18px;
+  }
+  .eyebrow::before{content:'';width:7px;height:7px;background:var(--joint);border-radius:50%;flex-shrink:0;}
+  h1,h2,h3{font-family:var(--font-display);font-weight:500;letter-spacing:-.01em;}
+  section{position:relative;padding:110px 0;border-bottom:1px solid var(--hair);}
+  section:last-of-type{border-bottom:none;}
+
+  /* ===== NAV ===== */
+  header{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    background:rgba(11,12,14,.82);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--hair);
+  }
+  .nav{
+    max-width:1180px;margin:0 auto;padding:0 32px;
+    height:68px;display:flex;align-items:center;justify-content:space-between;
+  }
+  .nav-id{
+    font-family:var(--font-mono);font-size:13px;color:var(--ink);
+    display:flex;align-items:center;gap:10px;
+  }
+  .nav-id .dot{width:8px;height:8px;background:var(--ok);border-radius:50%;box-shadow:0 0 0 3px rgba(91,214,140,.15);}
+  .nav-links{display:flex;gap:36px;align-items:center;}
+  .nav-links a{
+    font-family:var(--font-mono);font-size:13px;color:var(--ink-dim);
+    letter-spacing:.03em;transition:color .2s;
+  }
+  .nav-links a:hover{color:var(--joint);}
+  .nav-cta{
+    font-family:var(--font-mono);font-size:12px;color:var(--void);
+    background:var(--joint);padding:9px 18px;border-radius:var(--radius);
+    letter-spacing:.03em;transition:opacity .2s;
+  }
+  .nav-cta:hover{opacity:.85;}
+  .nav-toggle{display:none;background:none;border:1px solid var(--hair);color:var(--ink);width:38px;height:38px;font-size:18px;cursor:pointer;}
+
+  /* ===== HERO ===== */
+  .hero{
+    min-height:100svh;
+    display:flex;flex-direction:column;justify-content:center;
+    padding-top:68px;
+    position:relative;
+    overflow:hidden;
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size:44px 44px;
+    background-position:center;
+  }
+  .hero::after{
+    content:'';position:absolute;inset:0;
+    background:radial-gradient(ellipse 60% 50% at 50% 50%, transparent 0%, var(--void) 78%);
+    pointer-events:none;
+  }
+  .hud{
+    position:absolute;font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);
+    letter-spacing:.05em;line-height:1.8;
+    z-index:2;
+  }
+  .hud b{color:var(--ink-dim);font-weight:400;}
+  .hud.tl{top:88px;left:32px;}
+  .hud.tr{top:88px;right:32px;text-align:right;}
+  .hud.bl{bottom:32px;left:32px;}
+  .hud.br{bottom:32px;right:32px;text-align:right;}
+  .hud .rec{color:var(--ik);}
+  @media (max-width:760px){.hud.tl,.hud.tr{display:none;}}
+
+  .hero-inner{
+    position:relative;z-index:2;
+    max-width:1180px;margin:0 auto;padding:0 32px;width:100%;
+    display:flex;flex-direction:column;align-items:center;text-align:center;
+    gap:34px;
+  }
+  .hero-kicker{
+    font-family:var(--font-mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--ink-dim);
+  }
+  .hero h1{
+    font-size:clamp(40px,7vw,84px);
+    line-height:.98;
+    color:var(--ink);
+  }
+  .hero h1 span{color:var(--joint);}
+  .hero p{
+    font-family:var(--font-body);font-size:17px;color:var(--ink-dim);max-width:480px;
+  }
+
+  .rig{width:min(260px, 40vw);height:auto;}
+  .rig .bone{stroke:var(--ink-faint);stroke-width:2;}
+  .rig .bone-ik{stroke:var(--ik-dim);}
+  .rig .joint{fill:var(--joint);}
+  .rig .joint-ik{fill:var(--ik);}
+  .rig .armL{transform-origin:110px 122px;animation:swayL 5.5s ease-in-out infinite alternate;}
+  .rig .armR{transform-origin:190px 122px;animation:swayR 5.5s ease-in-out infinite alternate;}
+  .rig .legL{transform-origin:126px 222px;animation:swayLegL 6.2s ease-in-out infinite alternate;}
+  .rig .legR{transform-origin:174px 222px;animation:swayLegR 6.2s ease-in-out infinite alternate;}
+  .rig .torso{transform-origin:150px 220px;animation:breathe 4.4s ease-in-out infinite alternate;}
+  @keyframes breathe{from{transform:translateY(0);}to{transform:translateY(-4px);}}
+  @keyframes swayL{from{transform:rotate(-2deg);}to{transform:rotate(4deg);}}
+  @keyframes swayR{from{transform:rotate(2deg);}to{transform:rotate(-4deg);}}
+  @keyframes swayLegL{from{transform:rotate(1deg);}to{transform:rotate(-2deg);}}
+  @keyframes swayLegR{from{transform:rotate(-1deg);}to{transform:rotate(2deg);}}
+
+  .scroll-cue{
+    font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);
+    display:flex;flex-direction:column;align-items:center;gap:8px;letter-spacing:.1em;
+  }
+  .scroll-cue .line{width:1px;height:34px;background:linear-gradient(var(--ink-faint), transparent);animation:scrolldrop 1.8s ease-in-out infinite;}
+  @keyframes scrolldrop{0%{opacity:0;transform:translateY(-6px);}50%{opacity:1;}100%{opacity:0;transform:translateY(10px);}}
+
+  /* ===== SECTION HEADS ===== */
+  .sec-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:56px;flex-wrap:wrap;}
+  .sec-head h2{font-size:clamp(28px,4vw,42px);}
+  .sec-head p{color:var(--ink-dim);max-width:360px;font-size:15px;}
+
+  /* ===== REEL ===== */
+  .panel{
+    background:var(--surface);border:1px solid var(--hair);border-radius:var(--radius);
+    position:relative;
+  }
+  .panel-bar{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:12px 18px;border-bottom:1px solid var(--hair);
+    font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.05em;
+  }
+  .panel-bar .rec{color:var(--ik);display:flex;align-items:center;gap:6px;}
+  .panel-bar .rec::before{content:'';width:6px;height:6px;background:var(--ik);border-radius:50%;}
+  .reel-frame{position:relative;width:100%;aspect-ratio:16/9;background:#000;}
+  .reel-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
+  .reel-meta{display:flex;gap:40px;margin-top:28px;flex-wrap:wrap;}
+  .reel-meta div{font-family:var(--font-mono);font-size:12px;color:var(--ink-faint);}
+  .reel-meta b{display:block;color:var(--ink);font-size:15px;font-family:var(--font-body);font-weight:500;margin-top:4px;}
+
+  /* ===== PROJECTS ===== */
+  .shots{display:flex;flex-direction:column;}
+  .shot{
+    display:grid;grid-template-columns:110px 1fr 200px 28px;gap:24px;align-items:center;
+    padding:26px 0;border-top:1px solid var(--hair);
+    transition:padding-left .25s ease, border-color .25s ease;
+    cursor:pointer;
+  }
+  .shots .shot:last-child{border-bottom:1px solid var(--hair);}
+  .shot:hover{padding-left:14px;border-top-color:var(--joint-dim);}
+  .shot-id{font-family:var(--font-mono);font-size:13px;color:var(--joint);}
+  .shot-id small{display:block;color:var(--ink-faint);font-size:11px;margin-top:3px;}
+  .shot-title{font-family:var(--font-display);font-size:19px;font-weight:500;}
+  .shot-title span{display:block;font-family:var(--font-body);font-weight:400;font-size:13px;color:var(--ink-dim);margin-top:4px;}
+  .shot-role{font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);text-align:right;letter-spacing:.04em;line-height:1.7;}
+  .shot-arrow{font-family:var(--font-mono);color:var(--ink-faint);font-size:16px;transition:transform .25s, color .25s;}
+  .shot:hover .shot-arrow{transform:translateX(4px);color:var(--joint);}
+  @media (max-width:700px){
+    .shot{grid-template-columns:70px 1fr 22px;}
+    .shot-role{display:none;}
+  }
+
+  /* ===== BIO ===== */
+  .bio-grid{display:grid;grid-template-columns:320px 1fr;gap:64px;align-items:start;}
+  .bio-frame{
+    aspect-ratio:4/5;background:var(--surface);border:1px solid var(--hair);
+    display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;
+  }
+  .bio-frame::before{
+    content:'';position:absolute;inset:0;
+    background-image:linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size:22px 22px;
+  }
+  .bio-frame span{font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);z-index:1;letter-spacing:.05em;}
+  .bio-copy p{color:var(--ink-dim);font-size:16px;margin-bottom:18px;max-width:560px;}
+  .bio-copy p:first-of-type{color:var(--ink);font-size:19px;font-family:var(--font-display);font-weight:500;line-height:1.4;}
+  .skills{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px;}
+  .skill{
+    font-family:var(--font-mono);font-size:12px;color:var(--ink-dim);
+    border:1px solid var(--hair);padding:7px 13px;border-radius:var(--radius);
+    display:flex;align-items:center;gap:8px;
+  }
+  .skill::before{content:'';width:5px;height:5px;background:var(--joint-dim);border-radius:50%;}
+
+  /* ===== CONTACT ===== */
+  .contact-panel{padding:56px;text-align:center;}
+  .contact-panel h2{font-size:clamp(30px,5vw,50px);margin-bottom:18px;}
+  .contact-panel p{color:var(--ink-dim);max-width:460px;margin:0 auto 36px;}
+  .contact-actions{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
+  .btn{
+    font-family:var(--font-mono);font-size:13px;letter-spacing:.03em;
+    padding:14px 28px;border-radius:var(--radius);transition:all .2s;
+  }
+  .btn-primary{background:var(--joint);color:var(--void);}
+  .btn-primary:hover{opacity:.85;}
+  .btn-ghost{border:1px solid var(--hair);color:var(--ink);}
+  .btn-ghost:hover{border-color:var(--ink-faint);}
+  .social-row{display:flex;gap:26px;justify-content:center;margin-top:48px;}
+  .social-row a{font-family:var(--font-mono);font-size:12px;color:var(--ink-faint);letter-spacing:.05em;transition:color .2s;}
+  .social-row a:hover{color:var(--joint);}
+
+  footer{padding:28px 0;}
+  .foot-row{display:flex;justify-content:space-between;align-items:center;font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);flex-wrap:wrap;gap:10px;}
+
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease, transform .7s ease;}
+  .reveal.in{opacity:1;transform:translateY(0);}
+
+  /* ===== MOBILE NAV ===== */
+  @media (max-width:820px){
+    .nav-links{
+      position:fixed;top:68px;left:0;right:0;background:var(--void);
+      border-bottom:1px solid var(--hair);
+      flex-direction:column;align-items:flex-start;gap:0;
+      max-height:0;overflow:hidden;transition:max-height .3s ease;
+    }
+    .nav-links.open{max-height:320px;}
+    .nav-links a, .nav-links .nav-cta{width:100%;padding:16px 32px;border-bottom:1px solid var(--hair);}
+    .nav-cta{border-radius:0;text-align:center;}
+    .nav-toggle{display:block;}
+    .bio-grid{grid-template-columns:1fr;}
+    .bio-frame{max-width:280px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+    <div class="nav-id"><span class="dot"></span>N.COGNOME — RIG/ANIM</div>
+    <div class="nav-links" id="navLinks">
+      <a href="#reel">Reel</a>
+      <a href="#lavori">Lavori</a>
+      <a href="#profilo">Profilo</a>
+      <a href="#contatti" class="nav-cta">Contatti</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Apri menu">≡</button>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="hud tl">FILE <b>showreel_2026.mov</b><br>RES <b>1920×1080 · 24fps</b></div>
+  <div class="hud tr"><span class="rec">● REC</span><br>VIEWPORT <b>persp</b></div>
+  <div class="hero-inner">
+    <div class="hero-kicker">Portfolio — Animazione 3D &amp; Rigging</div>
+    <h1>Nome<br>Cog<span>nome</span></h1>
+    <svg class="rig" viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Illustrazione di uno scheletro di rig 3D animato">
+      <g class="torso">
+        <line class="bone" x1="150" y1="80" x2="150" y2="120"/>
+        <line class="bone" x1="150" y1="120" x2="150" y2="220"/>
+        <line class="bone" x1="110" y1="120" x2="190" y2="120"/>
+        <line class="bone" x1="126" y1="222" x2="174" y2="222"/>
+        <circle class="joint" cx="150" cy="60" r="17"/>
+        <circle class="joint" cx="150" cy="80" r="5"/>
+        <circle class="joint" cx="150" cy="120" r="6"/>
+        <circle class="joint" cx="150" cy="220" r="6"/>
+        <g class="armL">
+          <line class="bone" x1="110" y1="120" x2="86" y2="174"/>
+          <line class="bone bone-ik" x1="86" y1="174" x2="70" y2="224"/>
+          <circle class="joint" cx="110" cy="120" r="5"/>
+          <circle class="joint" cx="86" cy="174" r="5"/>
+          <circle class="joint-ik" cx="70" cy="224" r="6"/>
+        </g>
+        <g class="armR">
+          <line class="bone" x1="190" y1="120" x2="214" y2="174"/>
+          <line class="bone bone-ik" x1="214" y1="174" x2="230" y2="224"/>
+          <circle class="joint" cx="190" cy="120" r="5"/>
+          <circle class="joint" cx="214" cy="174" r="5"/>
+          <circle class="joint-ik" cx="230" cy="224" r="6"/>
+        </g>
+        <g class="legL">
+          <line class="bone" x1="126" y1="222" x2="116" y2="300"/>
+          <line class="bone bone-ik" x1="116" y1="300" x2="111" y2="378"/>
+          <circle class="joint" cx="126" cy="222" r="5"/>
+          <circle class="joint" cx="116" cy="300" r="5"/>
+          <circle class="joint-ik" cx="111" cy="378" r="6"/>
+        </g>
+        <g class="legR">
+          <line class="bone" x1="174" y1="222" x2="184" y2="300"/>
+          <line class="bone bone-ik" x1="184" y1="300" x2="189" y2="378"/>
+          <circle class="joint" cx="174" cy="222" r="5"/>
+          <circle class="joint" cx="184" cy="300" r="5"/>
+          <circle class="joint-ik" cx="189" cy="378" r="6"/>
+        </g>
+      </g>
+    </svg>
+    <p>Do vita a personaggi credibili, dal rig alla performance finale. Reel aggiornato con i lavori più recenti in animazione e character rigging.</p>
+    <a href="#reel" class="scroll-cue">GUARDA IL REEL<span class="line"></span></a>
+  </div>
+  <div class="hud bl">GRID <b>1u = 44px</b><br>X 0.0 / Y 0.0 / Z 0.0</div>
+  <div class="hud br">© 2026<br>DISPONIBILE PER PROGETTI</div>
+</section>
+
+<section id="reel">
+  <div class="wrap reveal">
+    <div class="sec-head">
+      <div>
+        <div class="eyebrow">Showreel</div>
+        <h2>Il reel, dall'inizio alla fine</h2>
+      </div>
+      <p>Una selezione dei lavori più recenti: rigging di personaggi, cicli di camminata, performance e animazione facciale.</p>
+    </div>
+    <div class="panel">
+      <div class="panel-bar">
+        <span>PLAYBACK</span>
+        <span class="rec">REEL_2026</span>
+      </div>
+      <div class="reel-frame">
+        <!-- Sostituisci VIMEO_ID con l'ID del tuo video Vimeo -->
+        <iframe src="https://player.vimeo.com/video/VIMEO_ID?title=0&amp;byline=0&amp;portrait=0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="Showreel 2026"></iframe>
+      </div>
+    </div>
+    <div class="reel-meta">
+      <div>DURATA<b>01:45</b></div>
+      <div>RUOLO<b>Rigging · Animazione</b></div>
+      <div>SOFTWARE<b>Maya · Blender</b></div>
+      <div>AGGIORNATO<b>Luglio 2026</b></div>
+    </div>
+  </div>
+</section>
+
+<section id="lavori">
+  <div class="wrap reveal">
+    <div class="sec-head">
+      <div>
+        <div class="eyebrow">Lavori selezionati</div>
+        <h2>Progetti recenti</h2>
+      </div>
+      <p>Ogni progetto elencato come una scena di produzione, con il ruolo svolto su quello specifico shot.</p>
+    </div>
+    <div class="shots">
+      <div class="shot">
+        <div class="shot-id">SH010<small>1–96</small></div>
+        <div class="shot-title">Nome progetto uno<span>Breve descrizione del lavoro svolto e del contesto del progetto.</span></div>
+        <div class="shot-role">RIGGING<br>CHARACTER SETUP</div>
+        <div class="shot-arrow">→</div>
+      </div>
+      <div class="shot">
+        <div class="shot-id">SH020<small>1–140</small></div>
+        <div class="shot-title">Nome progetto due<span>Breve descrizione del lavoro svolto e del contesto del progetto.</span></div>
+        <div class="shot-role">ANIMAZIONE<br>CICLO DI CAMMINATA</div>
+        <div class="shot-arrow">→</div>
+      </div>
+      <div class="shot">
+        <div class="shot-id">SH030<small>1–72</small></div>
+        <div class="shot-title">Nome progetto tre<span>Breve descrizione del lavoro svolto e del contesto del progetto.</span></div>
+        <div class="shot-role">FACIAL RIG<br>BLEND SHAPES</div>
+        <div class="shot-arrow">→</div>
+      </div>
+      <div class="shot">
+        <div class="shot-id">SH040<small>1–210</small></div>
+        <div class="shot-title">Nome progetto quattro<span>Breve descrizione del lavoro svolto e del contesto del progetto.</span></div>
+        <div class="shot-role">ANIMAZIONE<br>PERFORMANCE</div>
+        <div class="shot-arrow">→</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="profilo">
+  <div class="wrap reveal">
+    <div class="sec-head">
+      <div>
+        <div class="eyebrow">Profilo</div>
+        <h2>Chi sono</h2>
+      </div>
+    </div>
+    <div class="bio-grid">
+      <div class="bio-frame"><span>RITRATTO<br>1080×1350</span></div>
+      <div class="bio-copy">
+        <p>Sono un artista 3D specializzato in rigging e animazione di personaggi, con esperienza in produzioni per il cinema, i videogiochi e la pubblicità.</p>
+        <p>Scrivi qui due o tre righe sul tuo percorso: dove hai studiato o lavorato, i tipi di progetti a cui hai partecipato e cosa ti distingue come artista. Questo è il posto giusto per raccontare la tua storia in modo diretto.</p>
+        <p>Menziona qui eventuali collaborazioni, studi o produzioni rilevanti per cui hai lavorato.</p>
+        <div class="skills">
+          <div class="skill">Maya</div>
+          <div class="skill">Blender</div>
+          <div class="skill">Rigging avanzato</div>
+          <div class="skill">Skinning</div>
+          <div class="skill">Blend shapes</div>
+          <div class="skill">IK / FK</div>
+          <div class="skill">Animazione character</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contatti">
+  <div class="wrap reveal">
+    <div class="panel contact-panel">
+      <div class="eyebrow" style="justify-content:center;">Contatti</div>
+      <h2>Parliamo del tuo prossimo progetto</h2>
+      <p>Disponibile per collaborazioni freelance e progetti in studio. Scrivimi per il reel completo, il curriculum o per fissare una call.</p>
+      <div class="contact-actions">
+        <a href="mailto:tuaemail@esempio.com" class="btn btn-primary">Scrivimi</a>
+        <a href="#" class="btn btn-ghost">Scarica CV</a>
+      </div>
+      <div class="social-row">
+        <a href="#">LinkedIn</a>
+        <a href="#">ArtStation</a>
+        <a href="#">Vimeo</a>
+        <a href="#">Instagram</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-row">
+    <span>© 2026 Nome Cognome</span>
+    <span>3D Animation &amp; Rigging Artist</span>
+  </div>
+</footer>
+
+<script>
+  var toggle = document.getElementById('navToggle');
+  var links = document.getElementById('navLinks');
+  toggle.addEventListener('click', function(){
+    links.classList.toggle('open');
+  });
+  links.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){ links.classList.remove('open'); });
+  });
+
+  var reveals = document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          entry.target.classList.add('in');
+          io.unobserve(entry.target);
+        }
+      });
+    }, {threshold:0.12});
+    reveals.forEach(function(el){ io.observe(el); });
+  } else {
+    reveals.forEach(function(el){ el.classList.add('in'); });
+  }
+</script>
+
+</body>
+</html>
