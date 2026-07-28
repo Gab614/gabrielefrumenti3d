@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>First Last — 3D Animation &amp; Rigging</title>
-<meta name="description" content="3D animation and rigging portfolio and showreel by First Last.">
+<title>Gabriele Frumenti — 3D Animation &amp; Rigging</title>
+<meta name="description" content="3D animation and rigging portfolio and showreel by Gabriele Frumenti.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -60,6 +60,7 @@
   h1,h2,h3{font-family:var(--font-display);font-weight:500;letter-spacing:-.01em;}
   section{position:relative;padding:110px 0;border-bottom:1px solid var(--hair);}
   section:last-of-type{border-bottom:none;}
+  .anchor-target{scroll-margin-top:84px;}
 
   /* ===== NAV ===== */
   header{
@@ -128,14 +129,11 @@
     display:flex;flex-direction:column;align-items:center;text-align:center;
     gap:34px;
   }
-  .hero-kicker{
-    font-family:var(--font-mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;
-    color:var(--ink-dim);
-  }
   .hero h1{
-    font-size:clamp(40px,7vw,84px);
-    line-height:.98;
+    font-size:clamp(32px,5.6vw,64px);
+    line-height:1;
     color:var(--ink);
+    white-space:nowrap;
   }
   .hero h1 span{color:var(--joint);}
   .hero p{
@@ -158,12 +156,20 @@
   @keyframes swayLegL{from{transform:rotate(1deg);}to{transform:rotate(-2deg);}}
   @keyframes swayLegR{from{transform:rotate(-1deg);}to{transform:rotate(2deg);}}
 
-  .scroll-cue{
-    font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);
-    display:flex;flex-direction:column;align-items:center;gap:8px;letter-spacing:.1em;
+  .hero-subtitle{
+    font-family:var(--font-mono);font-size:14px;letter-spacing:.08em;color:var(--ink-dim);
+    margin-top:-22px;
   }
-  .scroll-cue .line{width:1px;height:34px;background:linear-gradient(var(--ink-faint), transparent);animation:scrolldrop 1.8s ease-in-out infinite;}
-  @keyframes scrolldrop{0%{opacity:0;transform:translateY(-6px);}50%{opacity:1;}100%{opacity:0;transform:translateY(10px);}}
+
+  .hero-cta{display:flex;gap:14px;margin-top:6px;flex-wrap:wrap;justify-content:center;}
+  .hero-cta a{
+    font-family:var(--font-mono);font-size:13px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;
+    padding:13px 26px;border-radius:24px;border:1px solid;transition:background .2s, color .2s, transform .2s, border-color .2s;
+  }
+  .cta-primary{background:var(--joint);color:var(--void);border-color:var(--joint);}
+  .cta-primary:hover{opacity:.85;transform:translateY(-2px);}
+  .cta-secondary{background:transparent;color:var(--ink);border-color:var(--hair);}
+  .cta-secondary:hover{border-color:var(--ink-faint);transform:translateY(-2px);}
 
   /* ===== SECTION HEADS ===== */
   .sec-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:56px;flex-wrap:wrap;}
@@ -181,7 +187,7 @@
     font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.05em;
   }
   .panel-bar .rec{color:var(--ik);display:flex;align-items:center;gap:6px;}
-  .panel-bar .rec::before{content:'';width:6px;height:6px;background:var(--ik);border-radius:50%;}
+  .panel-bar .rec::before{content:'';width:6px;height:6px;background:currentColor;border-radius:50%;}
   .reel-frame{position:relative;width:100%;aspect-ratio:16/9;background:#000;}
   .reel-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
   .reel-meta{display:flex;gap:40px;margin-top:28px;flex-wrap:wrap;}
@@ -222,6 +228,7 @@
     background-size:22px 22px;
   }
   .bio-frame span{font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);z-index:1;letter-spacing:.05em;}
+  .bio-frame img{width:100%;height:100%;object-fit:cover;position:relative;z-index:1;display:block;}
   .bio-copy p{color:var(--ink-dim);font-size:16px;margin-bottom:18px;max-width:560px;}
   .bio-copy p:first-of-type{color:var(--ink);font-size:19px;font-family:var(--font-display);font-weight:500;line-height:1.4;}
   .skills{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px;}
@@ -270,13 +277,16 @@
     .bio-grid{grid-template-columns:1fr;}
     .bio-frame{max-width:280px;}
   }
+  @media (max-width:420px){
+    .hero h1{white-space:normal;font-size:clamp(30px,10vw,44px);}
+  }
 </style>
 </head>
 <body>
 
 <header>
   <nav class="nav">
-    <div class="nav-id"><span class="dot"></span>F.LAST — RIG/ANIM</div>
+    <div class="nav-id"><span class="dot"></span>G.FRUMENTI — ANIM/RIG</div>
     <div class="nav-links" id="navLinks">
       <a href="#reel">Reel</a>
       <a href="#work">Work</a>
@@ -291,8 +301,8 @@
   <div class="hud tl">FILE <b>showreel_2026.mov</b><br>RES <b>1920×1080 · 24fps</b></div>
   <div class="hud tr"><span class="rec">● REC</span><br>VIEWPORT <b>persp</b></div>
   <div class="hero-inner">
-    <div class="hero-kicker">Portfolio — 3D Animation &amp; Rigging</div>
-    <h1>First<br>La<span>st</span></h1>
+    <h1>Gabriele <span>Frumenti</span></h1>
+    <div class="hero-subtitle">3D Animator · 3D Rigger</div>
     <svg class="rig" viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Illustration of an animated 3D rig skeleton">
       <g class="torso">
         <line class="bone" x1="150" y1="80" x2="150" y2="120"/>
@@ -333,8 +343,10 @@
         </g>
       </g>
     </svg>
-    <p>Bringing believable characters to life, from rig to final performance. Reel updated with the most recent work in animation and character rigging.</p>
-    <a href="#reel" class="scroll-cue">WATCH THE REEL<span class="line"></span></a>
+    <div class="hero-cta">
+      <a href="#reel" class="cta-primary">Show Reel</a>
+      <a href="#contact" class="cta-secondary">Contact me</a>
+    </div>
   </div>
   <div class="hud bl">GRID <b>1u = 44px</b><br>X 0.0 / Y 0.0 / Z 0.0</div>
   <div class="hud br">© 2026<br>AVAILABLE FOR PROJECTS</div>
@@ -347,24 +359,42 @@
         <div class="eyebrow">Showreel</div>
         <h2>The reel, start to finish</h2>
       </div>
-      <p>A selection of the most recent work: character rigging, walk cycles, performance and facial animation.</p>
     </div>
-    <div class="panel">
-      <div class="panel-bar">
-        <span>PLAYBACK</span>
-        <span class="rec">REEL_2026</span>
+
+    <div id="animation" class="anchor-target" style="margin-bottom:64px;">
+      <div class="panel-bar" style="border:1px solid var(--hair);border-bottom:none;">
+        <span><span class="dot" style="display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--joint);margin-right:8px;"></span>ANIMATION REEL</span>
+        <span class="rec" style="color:var(--joint);">ANIM_2026</span>
       </div>
-      <div class="reel-frame">
-        <!-- Replace VIMEO_ID with your Vimeo video ID -->
-        <iframe src="https://player.vimeo.com/video/VIMEO_ID?title=0&amp;byline=0&amp;portrait=0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="Showreel 2026"></iframe>
+      <div class="panel" style="border-top:none;">
+        <div class="reel-frame">
+          <iframe src="https://player.vimeo.com/video/1210037151?title=0&amp;byline=0&amp;portrait=0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="Animation Reel"></iframe>
+        </div>
+      </div>
+      <div class="reel-meta">
+        <div>FOCUS<b>Body mechanics · Performance</b></div>
+        <div>SOFTWARE<b>Maya</b></div>
+        <div>UPDATED<b>July 2026</b></div>
       </div>
     </div>
-    <div class="reel-meta">
-      <div>DURATION<b>01:45</b></div>
-      <div>ROLE<b>Rigging · Animation</b></div>
-      <div>SOFTWARE<b>Maya · Blender</b></div>
-      <div>UPDATED<b>July 2026</b></div>
+
+    <div id="rigging" class="anchor-target">
+      <div class="panel-bar" style="border:1px solid var(--hair);border-bottom:none;">
+        <span><span class="dot" style="display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--ik);margin-right:8px;"></span>RIGGING REEL</span>
+        <span class="rec" style="color:var(--ik);">RIG_2026</span>
+      </div>
+      <div class="panel" style="border-top:none;">
+        <div class="reel-frame">
+          <iframe src="https://player.vimeo.com/video/1186042360?title=0&amp;byline=0&amp;portrait=0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="Rigging Reel"></iframe>
+        </div>
+      </div>
+      <div class="reel-meta">
+        <div>FOCUS<b>Character setup · Skinning</b></div>
+        <div>SOFTWARE<b>Maya · Python</b></div>
+        <div>UPDATED<b>July 2026</b></div>
+      </div>
     </div>
+
   </div>
 </section>
 
@@ -415,7 +445,7 @@
       </div>
     </div>
     <div class="bio-grid">
-      <div class="bio-frame"><span>PORTRAIT<br>1080×1350</span></div>
+      <div class="bio-frame"><img src="assets/gabriele-portrait.png" alt="Portrait of Gabriele Frumenti"></div>
       <div class="bio-copy">
         <p>I'm a 3D artist specializing in character rigging and animation, with experience across film, games and advertising productions.</p>
         <p>Write two or three lines here about your path: where you studied or worked, the kinds of projects you've worked on and what sets you apart as an artist. This is the place to tell your story directly.</p>
@@ -438,11 +468,10 @@
   <div class="wrap reveal">
     <div class="panel contact-panel">
       <div class="eyebrow" style="justify-content:center;">Contact</div>
-      <h2>Let's talk about your next project</h2>
-      <p>Available for freelance collaborations and studio projects. Reach out for the full reel, a resume, or to set up a call.</p>
+      <p>Available for freelance collaborations and studio projects.</p>
       <div class="contact-actions">
-        <a href="mailto:youremail@example.com" class="btn btn-primary">Get in touch</a>
-        <a href="#" class="btn btn-ghost">Download CV</a>
+        <a href="mailto:frumentigabriele@gmail.com" class="btn btn-primary">Get in touch</a>
+        <a href="assets/CV_Frumenti_Gabriele.pdf" download class="btn btn-ghost">Download CV</a>
       </div>
       <div class="social-row">
         <a href="#">LinkedIn</a>
@@ -456,7 +485,7 @@
 
 <footer>
   <div class="wrap foot-row">
-    <span>© 2026 First Last</span>
+    <span>© 2026 Gabriele Frumenti</span>
     <span>3D Animation &amp; Rigging Artist</span>
   </div>
 </footer>
